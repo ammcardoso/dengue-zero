@@ -1,0 +1,23 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "NM_BAIRRO": "Centro"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-51.1750, -23.3180],
+            [-51.1550, -23.3180],
+            [-51.1550, -23.3020],
+            [-51.1750, -23.3020],
+            [-51.1750, -23.3180]
+          ]
+        ]
+      }
+    }
+  ]
+}
