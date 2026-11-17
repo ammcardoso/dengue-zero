@@ -17,3 +17,23 @@ export interface Foco {
   criado_em: string;
   offline?: boolean;
 }
+
+export interface FocoProximo extends Foco {
+  distancia_metros: number;
+}
+
+// Consulta espacial no PostGIS (RPC focos_proximos): ST_DWithin sobre GEOGRAPHY,
+// com índice GIST e distância geodésica em metros, ordenada da mais próxima.
+export async function buscarFocosProximos(
+  lat: number,
+  lng: number,
+  raioMetros: number
+): Promise<FocoProximo[]> {
+  const { data, error } = await supabase.rpc('focos_proximos', {
+    user_lat: lat,
+    user_lng: lng,
+    raio_metros: raioMetros,
+  });
+  if (error) throw error;
+  return (data ?? []) as FocoProximo[];
+}

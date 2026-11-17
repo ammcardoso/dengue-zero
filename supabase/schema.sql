@@ -63,6 +63,11 @@ ALTER TABLE public.focos ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Leitura pública de focos" ON public.focos FOR SELECT USING (true);
 CREATE POLICY "Inserção pública de focos" ON public.focos FOR INSERT WITH CHECK (true);
 
+-- Privilégios de tabela para a Data API (RLS só filtra linhas; sem GRANT o acesso é negado)
+REVOKE ALL ON public.focos FROM anon, authenticated;
+GRANT SELECT, INSERT ON public.focos TO anon, authenticated;
+GRANT EXECUTE ON FUNCTION public.focos_proximos(DOUBLE PRECISION, DOUBLE PRECISION, INTEGER) TO anon, authenticated;
+
 -- 6. Storage Bucket para fotos dos focos
 INSERT INTO storage.buckets (id, name, public) VALUES ('fotos-focos', 'fotos-focos', true)
 ON CONFLICT DO NOTHING;

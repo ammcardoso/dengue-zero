@@ -8,6 +8,8 @@ import { supabase, Foco } from '@/lib/supabase';
 import { db } from '@/lib/db';
 import { sincronizarPendentes } from '@/lib/sync';
 import ReportModal from '@/components/ReportModal';
+import AddressSearch from '@/components/AddressSearch';
+import type { ResultadoGeocodificacao } from '@/lib/geocoding';
 
 const MapView = dynamic(() => import('@/components/MapView'), { ssr: false });
 
@@ -22,6 +24,7 @@ export default function HomePage() {
   const [bairrosGeoJSON, setBairrosGeoJSON] = useState<any>(null);
   const [isOnline, setIsOnline] = useState(true);
   const [pendentesCount, setPendentesCount] = useState(0);
+  const [localBuscado, setLocalBuscado] = useState<ResultadoGeocodificacao | null>(null);
 
   // Carrega malha de bairros do IBGE
   useEffect(() => {
@@ -145,10 +148,19 @@ export default function HomePage() {
           mostrarMarcadores={mostrarMarcadores}
           userLocation={userLocation}
           bairrosGeoJSON={bairrosGeoJSON}
+          localBuscado={localBuscado}
         />
 
-        {/* Controles de Camadas e Filtro Temporal */}
-        <div className="absolute top-3 left-3 z-10 flex flex-col gap-2">
+        {/* Controles de Busca, Camadas e Filtro Temporal */}
+        <div className="absolute top-3 left-3 right-14 sm:right-auto sm:w-80 z-10 flex flex-col items-start gap-2">
+          <div className="w-full">
+            <AddressSearch
+              isOnline={isOnline}
+              onSelect={setLocalBuscado}
+              onClear={() => setLocalBuscado(null)}
+            />
+          </div>
+
           <select
             value={periodo}
             onChange={(e) => setPeriodo(e.target.value as any)}
@@ -159,7 +171,7 @@ export default function HomePage() {
             <option value="all">Todo o histórico</option>
           </select>
 
-          <div className="bg-white/95 backdrop-blur p-2 rounded-lg shadow border border-slate-200 space-y-1.5 text-xs">
+          <div className="bg-white/95 backdrop-blur p-2 rounded-lg shadow border border-slate-200 space-y-1.5 text-xs text-slate-700">
             <div className="font-bold text-slate-600 flex items-center gap-1 pb-1 border-b">
               <Layers className="w-3.5 h-3.5" /> Camadas SIG
             </div>

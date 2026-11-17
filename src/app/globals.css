@@ -12,11 +12,9 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* A interface é somente clara (painéis brancos sobre o mapa); não herdar cores do modo escuro do sistema */
+:root {
+  color-scheme: light;
 }
 
 body {

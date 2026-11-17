@@ -38,6 +38,11 @@ export function calcularDistanciaMetros(lat1: number, lng1: number, lat2: number
   return Math.round(turf.distance(from, to, { units: 'meters' }));
 }
 
+// Conta os focos dentro de um raio (em metros) a partir de um ponto — distância geodésica (Haversine)
+export function contarFocosNoRaio(lat: number, lng: number, focos: Foco[], raioMetros: number): number {
+  return focos.filter((f) => calcularDistanciaMetros(lat, lng, f.lat, f.lng) <= raioMetros).length;
+}
+
 // Peso do foco para intensidade do Heatmap
 export function getPesoFoco(tipo: Foco['tipo']): number {
   const pesos: Record<Foco['tipo'], number> = {
